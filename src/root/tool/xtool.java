@@ -308,6 +308,8 @@ public class xtool {
 	 * @return 将结果拼接成网页,进行返回
 	 */
 	public static StringBuilder x_servlet_urlPatterns_扫描_to_HTML(HttpServletRequest request) {
+		// 修改生成的网页模板
+		
 		StringBuilder x_StringBuffer = new StringBuilder();
 
 		// 获取当前项目登记信息集合
@@ -328,9 +330,9 @@ public class xtool {
 				.append("<a href=\".")
 				.append(x_urlPatterns )
 				.append("\">")
-				.append( x_urlPatterns )
+				// .append( x_urlPatterns )
 				.append(x_独个_servlet_登记信息.getName())
-				.append("   :  ")
+				// .append("   :  ")
 				.append("</a><br><br>");
 			}
 
