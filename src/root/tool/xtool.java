@@ -8,7 +8,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
 
+import javax.servlet.ServletRegistration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,6 +23,7 @@ public class xtool {
 	/** 2019年8月1日 23:53:54 **/
 	/** 2019年8月5日 15:39:58 **/
 	/** 2019年8月23日 12:21:55 **/
+	/** 2019年9月1日 16:28:44 **/
 	
 	public static StringBuilder x字符转码(String xname) {
 		StringBuilder x_StringBuilder = new StringBuilder();
@@ -296,6 +300,43 @@ public class xtool {
 	}
 	
 	
+
+	/**
+	 * 扫描当前项目所有注册的servlet 入口,将结果处理成网页!
+	 * (主要是方便在发布项目时,方便的测试各个 servlet)
+	 * @param 传入这个参数只是为了得到 getServletContext()
+	 * @return 将结果拼接成网页,进行返回
+	 */
+	public static StringBuilder x_servlet_urlPatterns_扫描_to_HTML(HttpServletRequest request) {
+		StringBuilder x_StringBuffer = new StringBuilder();
+
+		// 获取当前项目登记信息集合
+		Map<String, ? extends ServletRegistration> x_servlet登记信息 = request.getServletContext().getServletRegistrations();
+		Iterator<String> x_keyset_iterator = x_servlet登记信息.keySet().iterator();
+		while (x_keyset_iterator.hasNext()) {
+			String x_keysetL = (String) x_keyset_iterator.next();
+			
+			if (x_keysetL.equals("default") || x_keysetL.equals("jsp")) {
+				// 不扫描默认servlet
+				continue;
+			}
+			
+			ServletRegistration x_独个_servlet_登记信息 = x_servlet登记信息.get(x_keysetL);
+			Collection<String> x_Mappings = x_独个_servlet_登记信息.getMappings();
+			for (String x_urlPatterns : x_Mappings) {
+				x_StringBuffer
+				.append("<a href=\".")
+				.append(x_urlPatterns )
+				.append("\">")
+				.append( x_urlPatterns )
+				.append(x_独个_servlet_登记信息.getName())
+				.append("   :  ")
+				.append("</a><br><br>");
+			}
+
+		}
+		return x_StringBuffer;
+	}
 	
 	public static void main(String[] args) {
 		try {
